@@ -1,4 +1,4 @@
-name: Build APK
+name: Build APK with Buildozer
 
 on:
   workflow_dispatch:
@@ -10,27 +10,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: remote-control-app/client
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip zip unzip openjdk-17-jdk
+          pip install --upgrade pip
+          pip install buildozer
 
       - name: Build APK
+        working-directory: remote-control-app/client
         run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+          buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug-apk
-          path: remote-control-app/client/app/build/outputs/apk/debug/app-debug.apk
+          name: kivy-app-debug-apk
+          path: remote-control-app/client/bin/*.apk
