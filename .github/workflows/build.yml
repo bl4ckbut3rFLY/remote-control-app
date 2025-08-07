@@ -27,9 +27,10 @@ jobs:
           pip install cython
           pip install buildozer
 
-      - name: Accept Android SDK licenses
+      - name: Accept Android SDK licenses and install build-tools
         run: |
           yes | sdkmanager --licenses || true
+          sdkmanager "build-tools;34.0.0" || true
 
       - name: Build APK
         working-directory: remote-control-app/client
