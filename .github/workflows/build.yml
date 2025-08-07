@@ -26,6 +26,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
+          sudo apt install -y tar
           sudo apt install -y zip unzip tar openjdk-17-jdk python3-pip libffi-dev libssl-dev build-essential
           pip install --upgrade pip
           pip install cython
