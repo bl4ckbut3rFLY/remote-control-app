@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: remote-control-app/client
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -21,7 +25,6 @@ jobs:
           java-version: '17'
 
       - name: Build APK
-        working-directory: remote-control-app/client
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
