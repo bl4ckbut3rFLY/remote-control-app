@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      ANDROID_HOME: ${{ github.workspace }}/android-sdk
+      PATH: ${{ github.workspace }}/android-sdk/cmdline-tools/latest/bin:${{ github.workspace }}/android-sdk/platform-tools:${{ github.workspace }}/android-sdk/build-tools/34.0.0:$PATH
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -27,10 +31,15 @@ jobs:
           pip install cython
           pip install buildozer
 
-      - name: Accept Android SDK licenses and install build-tools
+      - name: Install Android SDK manually
         run: |
-          yes | sdkmanager --licenses || true
-          sdkmanager "build-tools;34.0.0" || true
+          mkdir -p $ANDROID_HOME/cmdline-tools
+          cd $ANDROID_HOME/cmdline-tools
+          curl -o sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+          unzip sdk.zip -d latest
+          rm sdk.zip
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
       - name: Build APK
         working-directory: remote-control-app/client
