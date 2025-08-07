@@ -1,14 +1,13 @@
 name: Build APK
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
-    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
@@ -22,10 +21,13 @@ jobs:
           java-version: '17'
 
       - name: Build APK
-        run: ./gradlew assembleDebug
+        run: |
+          cd remote-control-app/client
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: remote-control-app/client/app/build/outputs/apk/debug/app-debug.apk
