@@ -21,8 +21,8 @@ jobs:
           java-version: '17'
 
       - name: Build APK
+        working-directory: remote-control-app/client
         run: |
-          cd remote-control-app/client
           chmod +x gradlew
           ./gradlew assembleDebug
 
