@@ -1,7 +1,8 @@
 [app]
-title = RemoteControlApp
-package.name = remotecontrol
+title = RemoteClient
+package.name = remoteclient
 package.domain = org.example
-source.include_exts = py,png,jpg,kv
-requirements = kivy, websocket-client, requests, plyer
-android.permissions = INTERNET, RECEIVE_BOOT_COMPLETED
+source.dir = .
+version = 1.0
+requirements = kivy, websocket-client
+android.permissions = INTERNET
